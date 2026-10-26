@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <title>Laboratorul 4</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 24px;
+      font-family: Arial, sans-serif; line-height: 1.5;
+      color: #202124; background: #f3f5f8;
+    }
+    main { max-width: 900px; margin: auto; }
+    h1 { margin-bottom: 6px; }
+    .subtitle { margin-top: 0; color: #555; }
+    section {
+      background: white; border: 1px solid #dfe3e8; border-radius: 10px;
+      padding: 20px; margin: 18px 0; box-shadow: 0 2px 6px #0000000a;
+    }
+    h2 { margin-top: 0; }
+    button {
+      border: 0; border-radius: 6px; padding: 9px 13px; margin: 4px 3px 4px 0;
+      background: #2459a9; color: white; cursor: pointer; font-size: 14px;
+    }
+    button:hover { background: #17427f; }
+    input {
+      padding: 9px; border: 1px solid #b8c0cc; border-radius: 5px;
+      margin: 4px 8px 8px 0; max-width: 100%;
+    }
+    label { display: inline-block; margin: 4px 0; }
+    .output {
+      background: #f7f9fc; border: 1px solid #e1e6ed; border-radius: 6px;
+      padding: 12px; min-height: 42px; white-space: pre-wrap; overflow-wrap: anywhere;
+    }
+    .student {
+      padding: 12px; margin: 9px 0; border: 1px solid #e0e5ec;
+      border-radius: 7px; background: #fff;
+    }
+    .student strong { font-size: 16px; }
+    .count { font-weight: bold; margin: 10px 0; }
+    .message { margin-top: 10px; font-weight: bold; }
+    .form-row { margin-bottom: 5px; }
+    .form-row label { min-width: 75px; }
+    @media (max-width: 600px) {
+      body { padding: 12px; }
+      section { padding: 14px; }
+      input { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section>
+    <h2>Exercițiul 1 – Creează prima listă</h2>
+    <p>Lista de fructe, primul și ultimul element și numărul de elemente sunt afișate în consolă.</p>
+    <div id="fructeOutput" class="output"></div>
+  </section>
+
+  <section>
+    <h2>Exercițiul 2 – Adaugă și elimină</h2>
+    <p>Operațiile cerute sunt executate asupra listei de orașe, iar rezultatul final este afișat în consolă și aici.</p>
+    <div id="oraseOutput" class="output"></div>
+  </section>
+
+  <section>
+    <h2>Exercițiul 3 și 4 – Lista de cumpărături</h2>
+    <label for="produsInput">Produs:</label>
+    <input id="produsInput" type="text" placeholder="Introdu un produs">
+    <div>
+      <button id="adaugaSfarsit">Adaugă la sfârșit</button>
+      <button id="adaugaInceput">Adaugă la început</button>
+      <button id="stergePrimul">Șterge primul</button>
+      <button id="stergeUltimul">Șterge ultimul</button>
+    </div>
+    <div id="produseOutput" class="output" aria-live="polite"></div>
+    <p id="produseMesaj" class="message" aria-live="polite"></p>
+  </section>
+
+  <section>
+    <h2>Exercițiul 5 – Catalog electronic al elevilor</h2>
+    <p id="numarElevi" class="count">Număr de elevi: 3</p>
+    <div id="catalog"></div>
+
+    <h3>Adăugarea unui elev</h3>
+    <form id="formularElev">
+      <div class="form-row">
+        <label for="nume">Nume:</label>
+        <input id="nume" type="text" required placeholder="Numele elevului">
+      </div>
+      <div class="form-row">
+        <label for="varsta">Vârsta:</label>
+        <input id="varsta" type="number" min="1" max="120" required placeholder="Vârsta">
+      </div>
+      <div class="form-row">
+        <label for="nota">Nota:</label>
+        <input id="nota" type="number" min="1" max="10" step="1" required placeholder="Nota (1–10)">
+      </div>
+      <button type="submit">Adaugă elev</button>
+    </form>
+    <p id="mesajAdaugare" class="message" aria-live="polite"></p>
+
+    <h3>Ștergerea unui elev</h3>
+    <label for="numeStergere">Numele elevului:</label>
+    <input id="numeStergere" type="text" placeholder="Numele elevului">
+    <button id="butonStergere">Șterge elev</button>
+    <p id="mesajStergere" class="message" aria-live="polite"></p>
+
+    <h3>Căutarea unui elev</h3>
+    <label for="numeCautare">Caută elev:</label>
+    <input id="numeCautare" type="text" placeholder="Numele elevului">
+    <button id="butonCautare">Caută</button>
+    <div id="rezultatCautare" class="output" aria-live="polite"></div>
+  </section>
+</main>
+
+<script>
+  // Exercițiul 1
+  let fructe = ["Măr", "Pară", "Banana", "Portocală", "Kiwi"];
+  console.log("Exercițiul 1 – Lista de fructe:", fructe);
+  console.log("Primul fruct:", fructe[0]);
+  console.log("Ultimul fruct:", fructe[fructe.length - 1]);
+  console.log("Numărul de fructe:", fructe.length);
+  document.getElementById("fructeOutput").textContent =
+    "Lista: " + fructe.join(", ") + "\n" +
+    "Primul element: " + fructe[0] + "\n" +
+    "Ultimul element: " + fructe[fructe.length - 1] + "\n" +
+    "Numărul de elemente: " + fructe.length;
+
+  // Exercițiul 2
+  let orase = ["Chișinău", "Bălți", "Cahul"];
+  orase.push("Orhei");
+  orase.unshift("Soroca");
+  orase.pop();
+  orase.shift();
+  console.log("Exercițiul 2 – Lista finală de orașe:", orase);
+  document.getElementById("oraseOutput").textContent = "Lista finală: " + orase.join(", ");
+
+  // Exercițiile 3/4
+  let produse = ["Pâine", "Lapte", "Ouă"];
+  const produseOutput = document.getElementById("produseOutput");
+  const produseMesaj = document.getElementById("produseMesaj");
+
+  function afiseazaProduse() {
+    produseOutput.textContent = produse.length ? produse.join(" | ") : "Lista este goală!";
+  }
+  function obtineProdus() {
+    const input = document.getElementById("produsInput");
+    const valoare = input.value.trim();
+    if (!valoare) {
+      produseMesaj.textContent = "Introduceți numele unui produs.";
+      input.focus();
+      return null;
+    }
+    produseMesaj.textContent = "";
+    input.value = "";
+    return valoare;
+  }
+  document.getElementById("adaugaSfarsit").addEventListener("click", function () {
+    const produs = obtineProdus();
+    if (produs !== null) { produse.push(produs); afiseazaProduse(); }
+  });
+  document.getElementById("adaugaInceput").addEventListener("click", function () {
+    const produs = obtineProdus();
+    if (produs !== null) { produse.unshift(produs); afiseazaProduse(); }
+  });
+  document.getElementById("stergePrimul").addEventListener("click", function () {
+    if (produse.length) {
+      produse.shift();
+      produseMesaj.textContent = "";
+    }
+    afiseazaProduse();
+  });
+  document.getElementById("stergeUltimul").addEventListener("click", function () {
+    if (produse.length) {
+      produse.pop();
+      produseMesaj.textContent = "";
+    }
+    afiseazaProduse();
+  });
+  document.getElementById("produsInput").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("adaugaSfarsit").click();
+    }
+  });
+  afiseazaProduse();
+
+  // Exercițiul 5
+  let elevi = [
+    { nume: "Popescu Ana", varsta: 17, nota: 9 },
+    { nume: "Rusu Mihai", varsta: 18, nota: 8 },
+    { nume: "Ciobanu Maria", varsta: 17, nota: 10 }
+  ];
+
+  function afiseazaElevi() {
+    const catalog = document.getElementById("catalog");
+    catalog.replaceChildren();
+    document.getElementById("numarElevi").textContent = "Număr de elevi: " + elevi.length;
+
+    if (elevi.length === 0) {
+      const mesaj = document.createElement("p");
+      mesaj.textContent = "Catalogul este gol.";
+      catalog.appendChild(mesaj);
+      return;
+    }
+
+    elevi.forEach(function (elev, index) {
+      const card = document.createElement("div");
+      card.className = "student";
+
+      const nume = document.createElement("strong");
+      nume.textContent = (index + 1) + ". " + elev.nume;
+      const detalii = document.createElement("p");
+      detalii.textContent = "Vârsta: " + elev.varsta + "\nNota: " + elev.nota;
+      detalii.style.whiteSpace = "pre-line";
+
+      card.append(nume, detalii);
+      catalog.appendChild(card);
+    });
+  }
+
+  function adaugaElev(event) {
+    event.preventDefault();
+    const nume = document.getElementById("nume").value.trim();
+    const varsta = Number(document.getElementById("varsta").value);
+    const nota = Number(document.getElementById("nota").value);
+    const mesaj = document.getElementById("mesajAdaugare");
+
+    if (!nume || !Number.isInteger(varsta) || varsta < 1 || varsta > 120 ||
+        !Number.isInteger(nota) || nota < 1 || nota > 10) {
+      mesaj.textContent = "Introduceți un nume, o vârstă validă și o notă între 1 și 10.";
+      return;
+    }
+
+    let elevNou = { nume: nume, varsta: varsta, nota: nota };
+    elevi.push(elevNou); 
+    afiseazaElevi();
+    document.getElementById("formularElev").reset();
+    mesaj.textContent = "Elevul a fost adăugat.";
+  }
+
+  function stergeElev() {
+    const nume = document.getElementById("numeStergere").value.trim();
+    const mesaj = document.getElementById("mesajStergere");
+    if (!nume) {
+      mesaj.textContent = "Introduceți numele elevului.";
+      return;
+    }
+
+    const elevGasit = elevi.find(function (elev) {
+      return elev.nume.toLocaleLowerCase("ro") === nume.toLocaleLowerCase("ro");
+    });
+
+    if (!elevGasit) {
+      mesaj.textContent = "Elevul nu a fost găsit!";
+      return;
+    }
+
+    const index = elevi.indexOf(elevGasit);
+    elevi.splice(index, 1);
+    afiseazaElevi();
+    mesaj.textContent = "Elevul a fost șters.";
+    document.getElementById("numeStergere").value = "";
+  }
+
+  function cautaElev() {
+    const nume = document.getElementById("numeCautare").value.trim();
+    const rezultat = document.getElementById("rezultatCautare");
+    if (!nume) {
+      rezultat.textContent = "Introduceți numele elevului.";
+      return;
+    }
+
+    const elevGasit = elevi.find(function (elev) {
+      return elev.nume.toLocaleLowerCase("ro") === nume.toLocaleLowerCase("ro");
+    });
+
+    if (elevGasit) {
+      rezultat.textContent = "Elev găsit!\nNume: " + elevGasit.nume +
+        "\nVârsta: " + elevGasit.varsta + "\nNota: " + elevGasit.nota;
+    } else {
+      rezultat.textContent = "Elevul nu a fost găsit!";
+    }
+  }
+
+  document.getElementById("formularElev").addEventListener("submit", adaugaElev);
+  document.getElementById("butonStergere").addEventListener("click", stergeElev);
+  document.getElementById("butonCautare").addEventListener("click", cautaElev);
+  document.getElementById("numeCautare").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      cautaElev();
+    }
+  });
+
+  afiseazaElevi();
+</script>
+</body>
+</html>
